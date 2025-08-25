@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
+import Link from 'next/link'; // Import the Next.js Link component
 
-// Navigation links for the GUI view
+// CORRECTED: The href for on-page links should just be the #id.
+// The blog link is a true path.
 const navLinks = [
-  { title: 'Simulations', href: '#cyber-range' },
+  { title: 'Services', href: '#services' },
   { title: 'Projects', href: '#projects' },
+  { title: 'Intel Hub', href: '/blog' },
   { title: 'Contact', href: '#contact' },
 ];
 
 export default function Header({ onViewToggle, onResumeDownload, isTerminalMode = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Smooth-scroll handler
+  // Smooth-scroll handler for on-page links
   const handleScrollTo = (id) => {
-    setIsMenuOpen(false); // Close mobile menu on click
+    setIsMenuOpen(false);
     const element = document.querySelector(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -23,19 +26,26 @@ export default function Header({ onViewToggle, onResumeDownload, isTerminalMode 
     <header className="fixed top-0 left-0 w-full z-[1000] p-4 bg-bg-primary bg-opacity-70 backdrop-blur-lg border-b border-border">
       <nav className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <a href="#" className="text-2xl font-mono font-bold text-text-primary no-underline">
+        <Link href="/" className="text-2xl font-mono font-bold text-text-primary no-underline">
           MovingBytes<span className="text-accent-green">.</span>
-        </a>
+        </Link>
 
         {/* Desktop Links - Hidden in Terminal Mode */}
         {!isTerminalMode && (
           <ul className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <li key={link.title}>
-                <a href={link.href} onClick={(e) => { e.preventDefault(); handleScrollTo(link.href); }}
-                   className="font-mono text-sm text-text-secondary hover:text-accent-green transition-colors no-underline">
-                  {link.title}
-                </a>
+                {/* CORRECTED: Logic to handle either a scroll link or a page link */}
+                {link.href.startsWith('/') ? (
+                  <Link href={link.href} className="font-mono text-sm text-text-secondary hover:text-accent-green transition-colors no-underline">
+                    {link.title}
+                  </Link>
+                ) : (
+                  <a href={link.href} onClick={(e) => { e.preventDefault(); handleScrollTo(link.href); }}
+                     className="font-mono text-sm text-text-secondary hover:text-accent-green transition-colors no-underline">
+                    {link.title}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -63,12 +73,17 @@ export default function Header({ onViewToggle, onResumeDownload, isTerminalMode 
       {isMenuOpen && (
         <div className="md:hidden mt-4 bg-bg-secondary rounded-lg p-4">
           <ul className="flex flex-col items-center gap-4">
-            {/* Show nav links only if not in terminal mode */}
             {!isTerminalMode && navLinks.map((link) => (
               <li key={link.title}>
-                <a href={link.href} onClick={(e) => { e.preventDefault(); handleScrollTo(link.href); }} className="font-mono text-lg text-text-primary block py-2 no-underline">
-                  {link.title}
-                </a>
+                {link.href.startsWith('/') ? (
+                  <Link href={link.href} onClick={() => setIsMenuOpen(false)} className="font-mono text-lg text-text-primary block py-2 no-underline">
+                    {link.title}
+                  </Link>
+                ) : (
+                  <a href={link.href} onClick={(e) => { e.preventDefault(); handleScrollTo(link.href); }} className="font-mono text-lg text-text-primary block py-2 no-underline">
+                    {link.title}
+                  </a>
+                )}
               </li>
             ))}
             <li className="w-full border-t border-border mt-2 pt-4 flex flex-col items-center gap-4">
