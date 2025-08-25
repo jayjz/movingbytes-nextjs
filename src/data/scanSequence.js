@@ -1,0 +1,16 @@
+export const scanSequence = [
+  { prompt: 'root@movingbytes:~$', command: 'nmap -sS -A target.corp.com', type: 'prompt', delay: 1000 },
+  { text: 'Starting Nmap scan on target.corp.com...', type: 'output', delay: 500 },
+  { text: '22/tcp   open  ssh      OpenSSH 7.4 (protocol 2.0)', type: 'output-red', delay: 1000 },
+  { text: '80/tcp   open  http     Apache httpd 2.4.6', type: 'output-red', delay: 250 },
+  { text: '443/tcp  open  https    Apache httpd 2.4.6', type: 'output-red', delay: 250 },
+  { prompt: 'root@movingbytes:~$', command: 'sqlmap -u "target.corp.com/login" --dbs', type: 'prompt', delay: 2000 },
+  { text: '[CRITICAL] SQL injection vulnerability detected!', type: 'output-critical', delay: 500 },
+  { text: 'Database: users, admin, financial_records', type: 'output', delay: 1000 },
+  { prompt: 'root@movingbytes:~$', command: 'nikto -h target.corp.com', type: 'prompt', delay: 2000 },
+  { text: '+ Server: Apache/2.4.6 (CentOS)', type: 'output', delay: 500 },
+  { text: '+ OSVDB-3092: /admin/: Admin directory found', type: 'output-red', delay: 1000 },
+  { prompt: 'root@movingbytes:~$', command: 'gobuster dir -u target.corp.com -w common.txt', type: 'prompt', delay: 2000 },
+  { text: 'Scan complete. 47 vulnerabilities identified.', type: 'output-green', delay: 1000 },
+  { prompt: 'root@movingbytes:~$', command: '', type: 'final-prompt', delay: 500 },
+];
