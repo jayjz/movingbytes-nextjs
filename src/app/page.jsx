@@ -1,17 +1,21 @@
-"use client"; // This page uses hooks, so it's a client component
+"use client";
 
 import React from 'react';
 import Header from '../components/Header.jsx';
 import HeroBackground from '../components/HeroBackground.jsx';
-import ServicesV2 from '../components/ServicesV2.jsx';
-import Portfolio from '../components/Portfolio.jsx';
+import LiveHackingTerminal from '../components/LiveHackingTerminal.jsx';
+import ProblemSection from '../components/ProblemSection.jsx';
+import PricingTiers from '../components/PricingTiers.jsx'; // Import the Pricing Tiers
 import Testimonials from '../components/Testimonials.jsx';
 import Contact from '../components/Contact.jsx';
 import Footer from '../components/Footer.jsx';
+import { useAppContext } from '../context/AppContext';
+import ServicesV2 from '../components/ServicesV2.jsx';
+import Portfolio from '../components/Portfolio.jsx';
 import StatCounter from '../components/StatCounter.jsx';
 
-// This is the main page component for your site's root URL "/"
-export default function HomePage({ launchTerminal, onResumeDownload }) {
+export default function HomePage() {
+  const { launchTerminal } = useAppContext();
 
   const handleScrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -20,10 +24,10 @@ export default function HomePage({ launchTerminal, onResumeDownload }) {
   return (
     <>
       <HeroBackground />
-      <Header onViewToggle={() => launchTerminal('help')} onResumeDownload={onResumeDownload} />
+      <Header />
       <main className="agency-layout">
         
-        {/* --- HERO SECTION --- */}
+        {/* HERO SECTION */}
         <section className="hero-section text-center pt-32 pb-20 min-h-screen flex flex-col justify-center">
           <h1 className="text-5xl md:text-7xl font-bold leading-tight">
             From <span className="gradient-text">Data</span> to <span className="gradient-text">Deployment</span>
@@ -33,7 +37,6 @@ export default function HomePage({ launchTerminal, onResumeDownload }) {
           </p>
           <div className="flex justify-center gap-4 my-8">
             <button onClick={() => handleScrollTo('contact')} className="cta-button">[ Get Free Consultation ]</button>
-            <button onClick={() => launchTerminal('help')} className="cta-button">[ Launch Terminal ]</button>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 max-w-4xl mx-auto">
             <StatCounter target={50} suffix="+" label="AI Models Deployed" />
@@ -43,16 +46,19 @@ export default function HomePage({ launchTerminal, onResumeDownload }) {
           </div>
         </section>
 
-        {/* --- SERVICES SECTION --- */}
+        {/* SERVICES SECTION */}
         <ServicesV2 />
+
+        {/* PRICING TIERS (THE SOLUTION) */}
+        <PricingTiers />
         
-        {/* --- PORTFOLIO SECTION --- */}
+        {/* PORTFOLIO SECTION (PROOF OF WORK) */}
         <Portfolio />
 
-        {/* --- TESTIMONIALS SECTION --- */}
+        {/* TESTIMONIALS SECTION (SOCIAL PROOF) */}
         <Testimonials />
 
-        {/* --- CONTACT SECTION --- */}
+        {/* CONTACT SECTION (CONVERSION) */}
         <section id="contact" className="py-20 bg-bg-secondary border-y border-border-color -mx-8 px-8">
           <Contact />
         </section>
